@@ -1,7 +1,7 @@
 import Dexie from "./dexie.min.js"
 const database = new Dexie("AppDatabase0001")
 database.version(1).stores({
-    dataset: "++id, kana, kanji"
+    dataset: "++id, kana, kanji, lastdate"
 })
 
 export default {

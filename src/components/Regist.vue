@@ -17,13 +17,19 @@
       <v-card-actions>
         <v-container>
           <v-row>
-            <v-col cols="8">
-              <v-file-input  accept=".csv,text/csv" v-model="csvInput"
+            <v-col>
+              <!--<v-file-input  accept=".csv,text/csv" v-model="csvInput"
                 label="Read CSV FIle" @change="handleUpload" :clearable="false"
-              />
+              />-->
+              <label for="inputCsv">Read CSV File
+                <input type="file" accept=".csv,text/csv" style="display:none" v-bind:value="csvInput"
+                  id="inputCsv" v-on:change="OnFileChange" />
+              </label>
             </v-col>
-            <v-col cols="4">
-              <v-select v-model="selectedEncoding" return-object
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-select v-model="selectedEncoding" return-object style="padding-left:30%; padding-right:30%"
                 :items="Encodings" item-text="text" item-value="value" />
             </v-col>
           </v-row>
@@ -53,8 +59,8 @@
             <tbody>
               <tr v-for="(item, i) in newItems" v-bind:key="i">
                 <td>{{ i+1 }}</td>
-                <td>{{ item[0] }}</td>
-                <td>{{ item[1] }}</td>
+                <td>{{ item.kana }}</td>
+                <td>{{ item.kanji }}</td>
               </tr>
             </tbody>
           </template>
@@ -93,6 +99,10 @@ export default {
       this.showMessage("" + storage.currentItems.length + "件登録しました")
       this.clearInput()
     },
+    OnFileChange(e){
+      let files = e.target.files || e.dataTransfer.files;
+      this.handleUpload(files[0])
+    },
     handleUpload(file){ /* CSVからデータを読込 */
         /* データ：2列, 空行はスキップ */
         if(file){
@@ -102,8 +112,11 @@ export default {
                 const config = {
                   skipEmptyLines: true
                 }
-                const collection = Papa.parse(csv, config)
-                storage.setNewItems(collection.data)
+                let collection = Papa.parse(csv, config)
+                const data = collection.data.filter((v) => (v.length >= 2))
+                  .map((v) => ({kana: v[0], kanji: v[1], lastdate: null}))
+//                console.log(data)
+                storage.setNewItems(data)
             }
             reader.readAsText(file, this.selectedEncoding.value)
         }
@@ -116,6 +129,16 @@ export default {
 }
 </script>
 <style scoped>
+label > input {
+  display:none;
+}
+label {
+  color: #000; /* ラベルテキストの色を指定する */
+  background-color: #FFF;/* ラベルの背景色を指定する */
+  padding: 10px; /* ラベルとテキスト間の余白を指定する */
+  border: double 4px #000;/* ラベルのボーダーを指定する */
+  line-height: 100%;
+}
 th, td {
   text-align: center;
 }

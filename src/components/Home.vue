@@ -25,8 +25,8 @@
             <tbody>
               <tr v-for="(item, i) in items" v-bind:key="i">
                 <td>{{ i+1 }}</td>
-                <td>{{ item[0] }}</td>
-                <td>{{ item[1] }}</td>
+                <td>{{ item.kanji }}</td>
+                <td>{{ item.kana }}</td>
               </tr>
             </tbody>
           </template>
@@ -54,8 +54,8 @@ export default {
     getRandomItem(){ /* indexedDBに登録された項目からランダムに1件表示 */
       if(storage.currentItems && storage.currentItems.length > 0){
         let i = Math.floor(Math.random() * storage.currentItems.length);
-        this.item.kana = storage.currentItems[i][1]
-        this.item.kanji = storage.currentItems[i][0]
+        this.item.kana = storage.currentItems[i].kana
+        this.item.kanji = storage.currentItems[i].kanji
       } else {
         alert("データがありません")
       }
