@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.2519c1d29ea1cdcb4345a144ff9f22b3.js"
+  "precache-manifest.8cd82bfd144e0b84add54f402c00b7fb.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "lottery-pwa"});
